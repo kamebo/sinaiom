@@ -19,8 +19,8 @@ def datetime_str(): return time.strftime("%Y-%m-%d %H:%M:%S %a")
 def get_an_outer(url):
     '获取一个外盘品种的即时报价. 入口参数为品种代码(如hf_C), 或URL'
     if url[:4].upper() != "HTTP": url = _base_url+url
-    prc_lst = str(urllib.request.urlopen(url).read().decode("GB2312")).split('"')[1].split(',')[:len(outer_att)]
-    dct = {att:val for att,val in zip(outer_att,prc_lst)}
+    prc_lst = str(urllib.request.urlopen(url).read().decode("GB2312")).split('"')[1].split(',')[:len(_outer_att)]
+    dct = {att:val for att,val in zip(_outer_att,prc_lst)}
     dct['fetch_datetime'] = datetime_str()[:17]
     for att in ["yestoday_close","today_open","price","buy_price","sell_price","high_price","low_price",
                 "inventory"]:
@@ -30,8 +30,8 @@ def get_an_outer(url):
 def get_an_inner(url):
     '获取一个内盘品种的即时报价. 入口参数为品种代码(如C0), 或URL'
     if url[:4].upper() != "HTTP": url = _base_url+url
-    prc_lst = str(urllib.request.urlopen(url).read().decode("GB2312")).split('"')[1].split(',')[:len(inner_att)]
-    dct = {att:val for att,val in zip(inner_att,prc_lst)}
+    prc_lst = str(urllib.request.urlopen(url).read().decode("GB2312")).split('"')[1].split(',')[:len(_inner_att)]
+    dct = {att:val for att,val in zip(_inner_att,prc_lst)}
     dct['fetch_datetime'] = datetime_str()[:17]
     for att in ["yestoday_close","today_open","price","buy_price","sell_price","high_price","low_price",
                 "inventory","turnover"]: # an extra turnover is returned here...
