@@ -5,7 +5,7 @@
 ```
 get_an_inner('C0') # 玉米
 get_an_inner('A0') # 豆一
-get_an_inner('A0') # 豆二
+get_an_inner('B0') # 豆二
 
 get_an_outer('hf_C') # 美国玉米
 get_an_outer('hf_S') # 美国大豆

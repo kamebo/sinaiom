@@ -20,22 +20,26 @@ def get_an_outer(url):
     '获取一个外盘品种的即时报价. 入口参数为品种代码(如hf_C), 或URL'
     if url[:4].upper() != "HTTP": url = _base_url+url
     prc_lst = str(urllib.request.urlopen(url).read().decode("GB2312")).split('"')[1].split(',')[:len(_outer_att)]
-    dct = {att:val for att,val in zip(_outer_att,prc_lst)}
-    dct['fetch_datetime'] = datetime_str()[:17]
-    for att in ["yestoday_close","today_open","price","buy_price","sell_price","high_price","low_price",
-                "inventory"]:
-        dct[att] = float(dct[att]) # try catch??
+    dct0 = {att:val for att,val in zip(_outer_att,prc_lst)}
+    dct = {}
+    for att in ["yestoday_close","today_open","price","buy_price","sell_price","high_price","low_price","inventory"]:
+        dct[att] = float(dct0[att])
+    dct["date"] = dct0["date"]
+    dct["time"] = dct0["time"]
+    dct['fetch_datetime'] = datetime_str()[:19]
     return dct
 
 def get_an_inner(url):
     '获取一个内盘品种的即时报价. 入口参数为品种代码(如C0), 或URL'
     if url[:4].upper() != "HTTP": url = _base_url+url
     prc_lst = str(urllib.request.urlopen(url).read().decode("GB2312")).split('"')[1].split(',')[:len(_inner_att)]
-    dct = {att:val for att,val in zip(_inner_att,prc_lst)}
-    dct['fetch_datetime'] = datetime_str()[:17]
-    for att in ["yestoday_close","today_open","price","buy_price","sell_price","high_price","low_price",
-                "inventory","turnover"]: # an extra turnover is returned here...
-        dct[att] = float(dct[att]) # try catch??
+    dct0 = {att:val for att,val in zip(_inner_att,prc_lst)}
+    dct = {}
+    for att in ["yestoday_close","today_open","price","buy_price","sell_price","high_price","low_price","inventory","turnover"]:
+        dct[att] = float(dct0[att]) # an extra turnover is returned here...
+    dct["date"] = dct0["date"]
+    dct['time'] = datetime_str()[11:19] #""
+    dct['fetch_datetime'] = datetime_str()[:19]
     return dct
 
 def get_inner_turnovers(codes): return [get_an_inner(code)['turnover'] for code in codes]
